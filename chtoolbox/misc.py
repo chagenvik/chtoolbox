@@ -54,3 +54,67 @@ def clipboard_to_dict():
         dictionary = df.to_dict(orient='index')
 
     return dictionary
+
+
+def clipboard_to_list():
+    """
+    Retrieve data from the system clipboard and convert it to a list.
+    This function reads the clipboard content into a pandas DataFrame, 
+    converts the DataFrame values into a one-dimensional list, and returns the list.
+    Returns:
+        list: A list containing the clipboard data.
+    """
+
+    # Read clipboard data into a DataFrame
+    df = pd.read_clipboard(header=None)
+
+    # Convert DataFrame values to a one-dimensional list
+    data_list = df.values.flatten().tolist()
+
+    # Print the list
+    return data_list
+
+   
+def compare_lists_from_clipboard():
+    """
+    A function used to select and copy a table from Excel. 
+    The table is converted into lists (one list per column in the Excel range).
+    Then it compares all the lists and finds the unique elements that are not present in all the lists.
+    Useful for comparing large amounts of elements from Excel.
+    Dictionary containing one list per column in the clipboard (Excel range).
+    """
+    '''
+    En funksjon som brukes ved å merke og kopiere en tabell fra excel. 
+    Tabellen konverteres til lister (en liste per kolonne i excel rangen)
+    Deretter så sammenligner den alle listene og finner de unike elementene som ikke finnes i alle listene
+    
+    Nyttig for å sammenligne store mengder med elementer fra excel
+
+    Returns
+    -------
+    list_dict : dict
+        Dictionary containing one list per column in clipboard (excel range).
+    unique_items : list
+        A list of items that are not present in all the lists.
+    common_items : list
+        A list of items that are present in all the lists.
+
+    '''
+    # Read clipboard data as a DataFrame and convert it to dictionary
+    data = pd.read_clipboard(header=None)
+    list_dict = {}
+    for col in data.columns:
+        col_values = data[col].tolist()
+        col_values = [value for value in col_values if not pd.isna(value)]
+        list_dict[col] = col_values
+
+    # Find values not present in all lists
+    common_items = set.intersection(*(set(values) for values in list_dict.values()))
+    unique_items = []
+    for values in list_dict.values():
+        for value in values:
+            if value not in common_items and value not in unique_items:
+                unique_items.append(value)
+
+    # Print the resulting dictionary
+    return list_dict, unique_items, list(common_items)

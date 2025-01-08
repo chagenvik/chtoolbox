@@ -1,8 +1,9 @@
 import pandas as pd
 
-def clipboard_to_dict():
+def clipboard_to_dict(print_dict=True):
     """
     Converts clipboard content to a dictionary.
+    If print_dict is True, the dictionary is printed.
     This function reads the clipboard content into a pandas DataFrame and converts it to a dictionary.
     If the DataFrame has two columns, it converts it to a flat dictionary.
     If the DataFrame has more than two columns, it converts it to a nested dictionary with 'index' orientation.
@@ -48,10 +49,13 @@ def clipboard_to_dict():
             df = df[1:]
         
         # Set the first column as the index
-        df.set_index('idx', inplace=True)
+        df.set_index(df.columns[0], inplace=True)
         
         # Convert the DataFrame to a nested dictionary with 'index' orientation
         dictionary = df.to_dict(orient='index')
+
+    if print_dict:
+        print(dictionary)
 
     return dictionary
 

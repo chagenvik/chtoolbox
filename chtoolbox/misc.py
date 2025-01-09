@@ -122,3 +122,37 @@ def compare_lists_from_clipboard():
 
     # Print the resulting dictionary
     return list_dict, unique_items, list(common_items)
+
+
+def add_two_numbers(a,b):
+    """
+    Add two numbers together.
+    Args:
+        a (int): The first number.
+        b (int): The second number.
+    Returns:
+        int: The sum of the two numbers.
+    """
+    return a + b
+
+def multiply_two_numbers(a,b):
+    """
+    Multiply two numbers together.
+    Args:
+        a (int): The first number.
+        b (int): The second number.
+    Returns:
+        int: The product of the two numbers.
+    """
+    return a * b
+
+def subtract_two_numbers(a,b):
+    """
+    Subtract two numbers.
+    Args:
+        a (int): The first number.
+        b (int): The second number.
+    Returns:
+        int: The difference between the two numbers.
+    """
+    return a - b

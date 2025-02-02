@@ -40,6 +40,7 @@ setup(
     packages=find_packages(),
     install_requires=requirements,
     long_description=long_description,
-    long_description_content_type='text/markdown'
+    long_description_content_type='text/markdown',
+    url='https://github.com/chagenvik/chtoolbox'
 )
 

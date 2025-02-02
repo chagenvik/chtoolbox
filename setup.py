@@ -29,10 +29,17 @@ requirements_path = Path(__file__).parent / 'requirements.txt'
 with requirements_path.open() as requirements_file:
     requirements = requirements_file.read().splitlines()
 
+# Read the contents of the README file
+readme_path = Path(__file__).parent / 'README.md'
+with readme_path.open() as readme_file:
+    long_description = readme_file.read()
+
 setup(
     name='chtoolbox',
     version='1.0.0',
     packages=find_packages(),
-    install_requires=requirements
+    install_requires=requirements,
+    long_description=long_description,
+    long_description_content_type='text/markdown'
 )
 

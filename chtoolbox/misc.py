@@ -124,66 +124,50 @@ def compare_lists_from_clipboard():
     return list_dict, unique_items, list(common_items)
 
 
-def generate_test_data(my_function, cases, print_cases=True):
+import os
+import pathspec
+
+def add_license_to_python_files(license_file_path='LICENSE', directory='.', gitignore_path='.gitignore'):
     """
-    Generates test data by applying a given function to a set of cases.
-    Parameters
-    ----------
-    my_function : callable
-        The function to be tested. It should accept keyword arguments.
-    cases : dict or str
-        A dictionary where keys are case names and values are dictionaries of parameters,
-        or a string representing the path to a CSV file containing the cases.
-    print_cases : bool, optional
-        If True, prints the results of each case. Default is True.
-    Returns
-    -------
-    dict
-        A dictionary containing the input parameters and the corresponding output for each case.
-    Raises
-    ------
-    ValueError
-        If `cases` is neither a dictionary nor a path to a CSV file.
-        
-    Examples
-    --------
-    >>> def add(a, b):
-    ...     return {'sum': a + b}
-    >>> cases = {
-    ...     'case1': {'a': 1, 'b': 2},
-    ...     'case2': {'a': 3, 'b': 4}
-    ... }
-    >>> generate_test_data(add, cases)
-    {'case1': {'input': {'a': 1, 'b': 2}, 'output': {'sum': 3}},
-     'case2': {'input': {'a': 3, 'b': 4}, 'output': {'sum': 7}}}
+    Adds the LICENSE text to all Python files in the specified directory where it is not already present.
+    
+    Parameters:
+    - license_file_path (str): Path to the LICENSE file. Default is 'LICENSE'.
+    - directory (str): Directory to search for Python files. Default is '.'.
+    - gitignore_path (str): Path to the .gitignore file. Default is '.gitignore'.
     """
+    # Read the LICENSE text with UTF-8 encoding
+    with open(license_file_path, 'r', encoding='utf-8') as file:
+        license_text = file.read()
 
+    # Read the .gitignore file
+    with open(gitignore_path, 'r') as file:
+        gitignore = file.read()
 
+    # Create a pathspec from the .gitignore file
+    spec = pathspec.PathSpec.from_lines('gitwildmatch', gitignore.splitlines())
 
-    if type(cases) is str and cases[-4:] =='.csv':
-        cases = pd.read_csv(cases, index_col=0)
-        cases = cases.to_dict(orient='index')
-    elif type(cases) is dict:
-        pass
-    else:
-        raise ValueError('Cases must be a dictionary or a csv file')
+    # Iterate over all files in the directory
+    for root, _, files in os.walk(directory):
+        for file in files:
+            file_path = os.path.join(root, file)
+            
+            # Skip files and directories listed in .gitignore
+            if spec.match_file(file_path):
+                continue
+            
+            if file.endswith('.py'):
+                # Read the original content of the file with UTF-8 encoding
+                with open(file_path, 'r', encoding='utf-8') as original_file:
+                    original_content = original_file.read()
+                
+                # Check if the LICENSE text is already present
+                if license_text not in original_content:
+                    # Prepend the LICENSE text to the original content
+                    new_content = f'"""{license_text}"""\n\n{original_content}'
+                    
+                    # Write the new content back to the file with UTF-8 encoding
+                    with open(file_path, 'w', encoding='utf-8') as modified_file:
+                        modified_file.write(new_content)
 
-    results = {key : {'input' : value} for key, value in cases.items()}
-
-    for case_name, params in cases.items():
-        result = my_function(**params)
-
-        results[case_name]['output'] = {}
-
-        if type(result) is dict:
-            for key, val in result.items():
-                results[case_name]['output'][key] = val
-        else:
-            results[case_name]['output'] = result
-
-    if print_cases:
-        # Print the results
-        for case_name, params in results.items():
-            print(f"{case_name}: {params}")
-
-    return results
+    print("LICENSE text added to all Python files where it was not already present.")

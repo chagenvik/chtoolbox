@@ -22,15 +22,17 @@ SOFTWARE.
 """
 
 from setuptools import setup, find_packages
+from pathlib import Path
+
+# Read the requirements from the requirements.txt file
+requirements_path = Path(__file__).parent / 'requirements.txt'
+with requirements_path.open() as requirements_file:
+    requirements = requirements_file.read().splitlines()
 
 setup(
     name='chtoolbox',
-    version='0.2.6',
+    version='1.0.0',
     packages=find_packages(),
-    install_requires=[
-        'numpy',
-        'pandas',
-        'pathspec'
-    ]
+    install_requires=requirements
 )
 

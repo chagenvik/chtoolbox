@@ -102,7 +102,33 @@ def generate_test_results(my_function, cases, print_cases=True):
 
 
 def create_test_cases(inputs, print_cases=True):
-    
+    """
+    Generate test cases from input parameters.
+    Parameters
+    ----------
+    inputs : dict
+        A dictionary where keys are parameter names and values are lists or numpy arrays of parameter values.
+    print_cases : bool, optional
+        If True, print the generated test cases. Default is True.
+    Returns
+    -------
+    dict
+        A dictionary where keys are case names (e.g., 'case1', 'case2', ...) and values are dictionaries of parameter combinations.
+    Examples
+    --------
+    >>> inputs = {
+    ...     'param1': [1, 2],
+    ...     'param2': np.array([3, 4])
+    ... }
+    >>> create_test_cases(inputs)
+    {
+        'case1': {'param1': 1, 'param2': 3},
+        'case2': {'param1': 1, 'param2': 4},
+        'case3': {'param1': 2, 'param2': 3},
+        'case4': {'param1': 2, 'param2': 4}
+    }
+    """
+
     keys = inputs.keys()
     values = [v.tolist() if isinstance(v, np.ndarray) else v for v in inputs.values()]
     combinations = list(itertools.product(*values))

@@ -95,8 +95,10 @@ def generate_test_results(my_function, cases, print_cases=True):
 
     if print_cases:
         # Print the results
+        print('{')
         for case_name, params in results.items():
-            print(f"{case_name}: {params}")
+            print(f"'{case_name}': {params},")
+        print('}')
 
     return results
 
@@ -140,7 +142,7 @@ def create_test_cases(inputs, print_cases=True):
     if print_cases:
         print('{')
         for case_name, params in cases.items():
-            print(f"{case_name}: {params},")
+            print(f"'{case_name}': {params},")
         print('}')
         
     return cases

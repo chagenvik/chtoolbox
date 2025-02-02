@@ -38,7 +38,7 @@ def test_generate_test_results():
         assert value['output'] == value['input']['a'] + value['input']['b'] 
 
 def test_generate_test_results_csv():
-    cases = os.path.join(os.path.dirname(__file__), 'data\data.csv')
+    cases = os.path.join(os.path.dirname(__file__), 'data', 'data.csv')
     
     f1 = lambda a,b,c: a+b-c
 

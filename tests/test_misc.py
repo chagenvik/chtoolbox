@@ -1,4 +1,4 @@
-from chtoolbox import misc
+from chtoolbox import testing
 import os
 
 def test_generate_test_data():
@@ -9,7 +9,7 @@ def test_generate_test_data():
     def add(a, b):
         return a+b
     
-    res = misc.generate_test_data(add, cases)
+    res = testing.generate_test_data(add, cases)
 
     for key, value in res.items():
         assert value['output'] == value['input']['a'] + value['input']['b'] 
@@ -19,7 +19,7 @@ def test_generate_test_data_csv():
     
     f1 = lambda a,b,c: a+b-c
 
-    res1 = misc.generate_test_data(f1, cases)
+    res1 = testing.generate_test_data(f1, cases)
 
     for key, value in res1.items():
         assert value['output'] == value['input']['a'] + value['input']['b'] - value['input']['c']
@@ -30,7 +30,7 @@ def test_generate_test_data_csv():
         
         return x
     
-    res2 = misc.generate_test_data(f2, cases)
+    res2 = testing.generate_test_data(f2, cases)
 
     for key, value in res2.items():
         assert value['output']['sum'] == value['input']['a'] + value['input']['b']

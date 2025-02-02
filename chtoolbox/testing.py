@@ -79,7 +79,7 @@ def generate_test_results(my_function, cases, print_cases=True):
 
 
 def create_test_cases(inputs, print_cases=True):
-
+    
     keys = inputs.keys()
     values = [v.tolist() if isinstance(v, np.ndarray) else v for v in inputs.values()]
     combinations = list(itertools.product(*values))

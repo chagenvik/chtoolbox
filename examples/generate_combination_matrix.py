@@ -21,26 +21,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from setuptools import setup, find_packages
-from pathlib import Path
+from chtoolbox import misc
 
-# Read the requirements from the requirements.txt file
-requirements_path = Path(__file__).parent / 'requirements.txt'
-with requirements_path.open() as requirements_file:
-    requirements = requirements_file.read().splitlines()
+# Example usage of the generate_combination_matrix function
+input_dict = {
+    'pressure': [10, 20],
+    'GVF': [10, 20, 30],
+    'WLR': [40, 60, 80],
+}
 
-# Read the contents of the README file
-readme_path = Path(__file__).parent / 'README.md'
-with readme_path.open() as readme_file:
-    long_description = readme_file.read()
+# Generate the combination matrix
+combination_matrix = misc.generate_combination_matrix(input_dict)
 
-setup(
-    name='chtoolbox',
-    version='1.1.0',
-    packages=find_packages(),
-    install_requires=requirements,
-    long_description=long_description,
-    long_description_content_type='text/markdown',
-    url='https://github.com/chagenvik/chtoolbox'
-)
-
+# Print the resulting DataFrame
+print(combination_matrix)

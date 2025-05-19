@@ -22,6 +22,7 @@ SOFTWARE.
 """
 
 import pandas as pd
+from itertools import product
 
 def clipboard_to_dict(print_dict=True):
     """
@@ -145,3 +146,63 @@ def compare_lists_from_clipboard():
 
     # Print the resulting dictionary
     return list_dict, unique_items, list(common_items)
+
+
+def generate_combination_matrix(input_dict):
+    """
+    Generate a DataFrame containing all possible combinations of input parameters.
+    This function takes a dictionary of input parameters, where the keys are parameter names
+    and the values are lists of possible values for those parameters. It generates all possible
+    combinations of the parameter values and returns them as a pandas DataFrame.
+    Parameters
+    ----------
+    input_dict : dict
+        A dictionary where keys are parameter names (str) and values are lists of possible
+        values for those parameters. For example:
+        {
+            'pressure': [10, 20],
+            'GVF': [10, 20, 30],
+            'WLR': [40, 60, 80],
+        }
+    Returns
+    -------
+    pandas.DataFrame
+        A DataFrame where each row represents a unique combination of the input parameter values.
+        The columns correspond to the keys of the input dictionary.
+    Examples
+    --------
+    >>> input_dict = {
+    ...     'pressure': [10, 20],
+    ...     'GVF': [10, 20, 30],
+    ...     'WLR': [40, 60, 80],
+    ... }
+    >>> generate_combination_matrix(input_dict)
+       pressure  GVF  WLR
+    0        10   10   40
+    1        10   10   60
+    2        10   10   80
+    3        10   20   40
+    4        10   20   60
+    5        10   20   80
+    6        10   30   40
+    7        10   30   60
+    8        10   30   80
+    9        20   10   40
+    10       20   10   60
+    11       20   10   80
+    12       20   20   40
+    13       20   20   60
+    14       20   20   80
+    15       20   30   40
+    16       20   30   60
+    17       20   30   80
+    """
+
+
+    # Generate all combinations using itertools.product
+    combinations = product(*input_dict.values())
+    
+    # Create a DataFrame from the combinations
+    df = pd.DataFrame(combinations, columns=input_dict.keys())
+    
+    return df

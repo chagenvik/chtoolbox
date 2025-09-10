@@ -109,7 +109,7 @@ def compare_lists_from_clipboard():
     The table is converted into lists (one list per column in the Excel range).
     Then it compares all the lists and finds the unique elements that are not present in all the lists.
     Useful for comparing large amounts of elements from Excel.
-    Dictionary containing one list per column in the clipboard (Excel range).
+    Dictionary containing one list per column in clipboard (Excel range).
     """
     '''
     En funksjon som brukes ved å merke og kopiere en tabell fra excel. 
@@ -206,3 +206,45 @@ def generate_combination_matrix(input_dict):
     df = pd.DataFrame(combinations, columns=input_dict.keys())
     
     return df
+
+
+def filter_dictionary(input_dict: dict, filter: str | list[str]) -> dict:
+    """
+    Filters a dictionary to only include keys containing the filter string(s).
+
+    Parameters
+    ----------
+    input_dict : dict
+        The dictionary to filter.
+    filter : str or list of str
+        String or list of strings to match in the dictionary keys (case-insensitive).
+
+    Returns
+    -------
+    dict
+        A new dictionary containing only the keys that match the filter string(s).
+
+    Examples
+    --------
+    >>> input_dict = {
+    ...     'pressure': [10, 20],
+    ...     'GVF': [10, 20, 30],
+    ...     'WLR': [40, 60, 80],
+    ...     'temp': [100, 200],
+    ... }
+    >>> filter_dictionary(input_dict, 'pres')
+    {'pressure': [10, 20]}
+    >>> filter_dictionary(input_dict, ['pres', 'WLR'])
+    {'pressure': [10, 20], 'WLR': [40, 60, 80]}
+
+    Notes
+    -----
+    - Filtering is case-insensitive.
+    - If no keys match, an empty dictionary is returned.
+    """
+    if isinstance(filter, str):
+        filter = [filter]
+    
+    filtered_dict = {key: value for key, value in input_dict.items() if any(f.lower() in key.lower() for f in filter)}
+    
+    return filtered_dict

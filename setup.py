@@ -36,7 +36,7 @@ with readme_path.open() as readme_file:
 
 setup(
     name='chtoolbox',
-    version='1.1.1',
+    version='1.2.0',
     packages=find_packages(),
     install_requires=requirements,
     long_description=long_description,
